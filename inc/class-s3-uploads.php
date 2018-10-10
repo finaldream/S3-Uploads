@@ -87,8 +87,8 @@ class S3_Uploads {
 
 		$this->original_upload_dir = $dirs;
 
-		$dirs['path']    = str_replace( WP_CONTENT_DIR, 's3://' . $this->bucket, $dirs['path'] );
-		$dirs['basedir'] = str_replace( WP_CONTENT_DIR, 's3://' . $this->bucket, $dirs['basedir'] );
+		$dirs['path']    = str_replace( $this->get_content_dir(), 's3://' . $this->bucket, $dirs['path'] );
+		$dirs['basedir'] = str_replace( $this->get_content_dir(), 's3://' . $this->bucket, $dirs['basedir'] );
 
 		if ( ! defined( 'S3_UPLOADS_DISABLE_REPLACE_UPLOAD_URL' ) || ! S3_UPLOADS_DISABLE_REPLACE_UPLOAD_URL ) {
 
@@ -169,6 +169,10 @@ class S3_Uploads {
 
 		return $this->original_upload_dir;
 	}
+
+	public function get_content_dir() {
+	    return apply_filters('s3_uploads_content_dir_path', WP_CONTENT_DIR);
+    }
 
 	/**
 	 * @return Aws\S3\S3Client
